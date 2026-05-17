@@ -27,7 +27,7 @@ public class ExtentManager {
 	// Initialize Extent Report//src\test\resources\ExtentReports
 	public synchronized static ExtentReports getReport() {
 		if (extent == null) {
-			String reportPath = System.getProperty("user.dir") + "/src/test/resources/ExtentReports/ExtentReport.html";
+			String reportPath = System.getProperty("user.dir") + "/src/test/resources/extentreports/extentreport.html";
 			ExtentSparkReporter spark = new ExtentSparkReporter(reportPath);
 
 			spark.config().setReportName("Automationn Test Report");
@@ -98,14 +98,14 @@ public class ExtentManager {
 	}
 
 	// Take a screenshot with date and time in the file
-	public synchronized static String takeScreenshot(WebDriver driver, String screenshotName) {
+	public synchronized static String takeScreenshot(WebDriver driver, String screenshotname) {
 		TakesScreenshot ts = (TakesScreenshot) driver;
 		File src = ts.getScreenshotAs(OutputType.FILE);
 		// Format date and Time for file name
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
 
 		// Saving the screenshot to a file
-		String destPath = System.getProperty("user.dir") + "/src/test/resources/Screenshots/" + screenshotName + "_"
+		String destPath = System.getProperty("user.dir") + "/src/test/resources/screenshots/" + screenshotname + "_"
 				+ timeStamp + ".png";
 
 		File finalPath = new File(destPath);

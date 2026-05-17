@@ -22,8 +22,8 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
       - name: Cache Maven dependencies
         uses: actions/cache@v4
@@ -39,9 +39,13 @@ jobs:
       - name: Run TestNG tests
         run: mvn clean test
 
-      - name: Upload Extent Report
+      - name: Upload Reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: extent-report
-          path: test-output/
+          name: automation-artifacts
+          path: |
+            test-output/
+            screenshots/
+            logs/
+            src/test/resources/extentreports/
