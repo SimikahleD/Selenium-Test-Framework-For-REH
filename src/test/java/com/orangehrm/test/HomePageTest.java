@@ -28,6 +28,5 @@ public class HomePageTest extends BaseClass{
 		Assert.assertTrue(homePage.verifyOrangeHRMlogo(), " Logo is not visible");
 		ExtentManager.logSteps("Validation successfully!");
 		staticWait(5);
-		ExtentManager.logSkip("Testing Skipped");
 	}
 }

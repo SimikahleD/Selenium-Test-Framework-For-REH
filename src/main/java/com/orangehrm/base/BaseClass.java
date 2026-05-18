@@ -19,6 +19,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Parameters;
 
 import com.orangehrm.actiondriver.ActionDriver;
 import com.orangehrm.utils.ExtentManager;
@@ -37,6 +38,7 @@ public class BaseClass {
 	private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
 	private static ThreadLocal<ActionDriver> actionDriver = new ThreadLocal<>();
+
 
 	public static final Logger logger = LoggerManager.getLogger(BaseClass.class);
 
@@ -61,11 +63,15 @@ public class BaseClass {
 	// ======================================================
 
 	@BeforeMethod
-	public synchronized void setup() {
+	@Parameters("browser")
+	public synchronized void setup(String browser) {
 
 		logger.info("========== TEST EXECUTION STARTED ==========");
-
-		launchBrowser();
+		
+		// Store browser for report usage
+	    ExtentManager.setBrowser(browser);
+	    
+		launchBrowser(browser);
 
 		configBrowser();
 
@@ -79,9 +85,10 @@ public class BaseClass {
 	// BROWSER LAUNCH
 	// ======================================================
 
-	private synchronized void launchBrowser() {
+	private synchronized void launchBrowser(String browser) {
 
-		String browser = prop.getProperty("browser");
+		// String browser = prop.getProperty("browser"); -- This is passed from the
+		// TestNG from run time
 
 		boolean headless = Boolean.parseBoolean(prop.getProperty("headless"));
 
@@ -151,8 +158,10 @@ public class BaseClass {
 		// ==================================================
 
 		else if (browser.equalsIgnoreCase("edge")) {
+			
+			WebDriverManager.edgedriver().clearDriverCache().clearResolutionCache().setup();
 
-			WebDriverManager.edgedriver().avoidResolutionCache().setup();
+			//WebDriverManager.edgedriver().avoidResolutionCache().setup();
 
 			EdgeOptions options = new EdgeOptions();
 
@@ -302,6 +311,10 @@ public class BaseClass {
 
 		return prop;
 	}
+
+	// ======================================================
+	// Waits
+	// ======================================================
 
 	// Static wait for pause
 	public void staticWait(int seconds) {
