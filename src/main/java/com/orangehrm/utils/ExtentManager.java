@@ -61,39 +61,52 @@ public class ExtentManager {
 
 		if (extent == null) {
 
-			// Report generation location
-			String reportPath = System.getProperty("user.dir") + "/src/test/resources/extentreports/extentreport.html";
+	        try {
+	            // Report path (cleaner + reusable)
+	            String reportPath = System.getProperty("user.dir")
+	                    + "/src/test/resources/extentreports/ExtentReport.html";
 
-			// Initialize Spark reporter
-			ExtentSparkReporter spark = new ExtentSparkReporter(reportPath);
+	            // Initialize Spark reporter
+	            ExtentSparkReporter spark = new ExtentSparkReporter(reportPath);
 
-			// Report customization
-			spark.config().setReportName("Automation Test Report");
+	            // -------------------------
+	            // Report Configuration
+	            // -------------------------
+	            spark.config().setReportName("Automation Test Report");
+	            spark.config().setDocumentTitle("OrangeHRM Automation Results");
+	            spark.config().setTheme(Theme.DARK);
 
-			spark.config().setDocumentTitle("OrangeHRM");
+	            // Optional: timeline or timestamp visibility (if supported version)
+	            spark.config().setTimeStampFormat("yyyy-MM-dd HH:mm:ss");
 
-			spark.config().setTheme(Theme.DARK);
+	            // -------------------------
+	            // Extent Report Instance
+	            // -------------------------
+	            extent = new ExtentReports();
+	            extent.attachReporter(spark);
 
-			// Create report instance
-			extent = new ExtentReports();
+	            // -------------------------
+	            // System Info (better structured)
+	            // -------------------------
+	            extent.setSystemInfo("OS", System.getProperty("os.name"));
+	            extent.setSystemInfo("OS Version", System.getProperty("os.version"));
+	            extent.setSystemInfo("Java Version", System.getProperty("java.version"));
+	            extent.setSystemInfo("User", System.getProperty("user.name"));
+	            extent.setSystemInfo("Environment", "QA");
 
-			extent.attachReporter(spark);
+	            // Optional metadata (useful in real frameworks)
+	            extent.setSystemInfo("Framework", "Selenium + TestNG");
+	            extent.setSystemInfo("Author", "Simikahle");
 
-			// Add system information
-			extent.setSystemInfo("Operating System", System.getProperty("os.name"));
+	            // logger.info("Extent report initialized successfully");
 
-			extent.setSystemInfo("Java Version", System.getProperty("java.version"));
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            throw new RuntimeException("Failed to initialize Extent Report", e);
+	        }
+	    }
 
-			extent.setSystemInfo("User Name", System.getProperty("user.name"));
-
-			/*
-			 * Suggested log:
-			 * 
-			 * logger.info("Extent report initialized successfully");
-			 */
-		}
-
-		return extent;
+	    return extent;
 	}
 
 	/**

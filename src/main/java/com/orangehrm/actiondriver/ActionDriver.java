@@ -114,13 +114,15 @@ public class ActionDriver {
 			applyBorder(by, "green");
 			element.clear();
 			element.sendKeys(text);
-			ExtentManager.logSteps("Entered text into " + elementDescription);
+			String highlightedText = "<span style='color:green;font-weight:bold;'>"  + text + "</span>";
+			ExtentManager.logSteps("Entered text \""+highlightedText+"\" into " + elementDescription);
 			logger.info("Entered text [{}] into {}", text, elementDescription);
 
 		} catch (Exception e) {
 
 			applyBorder(by, "red");
-			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to enter text into " + elementDescription,
+			String highlightedText = "<span style='color:red;font-weight:bold;'>"  + text + "</span>";
+			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to enter text \""+highlightedText+"\"  into " + elementDescription,
 					"Text entry failure screenshot");
 
 			logger.error("Unable to enter text into {}. Reason: {}", elementDescription, e.getMessage());
@@ -167,8 +169,12 @@ public class ActionDriver {
 			waitForElelemntToBeVisible(by);
 			String actualText = driver.findElement(by).getText();
 			if (expectedText.equals(actualText)) {
+				
 				applyBorder(by, "green");
-				ExtentManager.logStepWithScreenshot(BaseClass.getDriver(), "Text validation passed",
+				String highlightedexpectedText = "<span style='color:green;font-weight:bold;'>"  + expectedText + "</span>";
+				String highlightedactualText = "<span style='color:green;font-weight:bold;'>"  + actualText + "</span>";
+				
+				ExtentManager.logStepWithScreenshot(BaseClass.getDriver(), "Text validation passed "+highlightedexpectedText+" <--> "+highlightedactualText,
 						"Validation screenshot");
 				logger.info("Validation PASSED for {}", elementDescription);
 				return true;
